@@ -2,11 +2,12 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 
-router.post("/", (req, res) => {
-  const { code } = req.body;
-  const redirectUri = "http://localhost:3000/";
+router.get("/", (req, res) => {
+  const { code } = req.query;
+  const redirectUri = "http://localhost:3000/logining";
 
   const getAuthCode = async (code) => {
+    console.log(code);
     await axios({
       method: "POST",
       url: "https://kauth.kakao.com/oauth/token",
