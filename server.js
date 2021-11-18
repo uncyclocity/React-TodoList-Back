@@ -2,7 +2,13 @@ const express = require("express");
 const server = express();
 const cors = require("cors");
 
+server.use(express.json());
+
 server.use(cors());
+
+const getAccessToken = require("./api/getAccessToken");
+
+server.use("/api/getAccessToken", getAccessToken);
 
 server.get("/", (req, res) => {
   res.send("React_TodoList is here");
