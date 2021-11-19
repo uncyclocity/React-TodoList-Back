@@ -8,8 +8,18 @@ server.use(express.json());
 server.use(cors());
 
 const getAccessToken = require("./api/getAccessToken");
+const getUserInfo = require("./api/getUserInfo");
+const createMember = require("./api/createMember");
+const createTodo = require("./api/createTodo");
+const changeTodoStatus = require("./api/changeTodoStatus");
+const deleteTodo = require("./api/deleteTodo");
 
 server.use("/api/getAccessToken", getAccessToken);
+server.use("/api/getUserInfo", getUserInfo);
+server.use("/api/createMember", createMember);
+server.use("/api/createTodo", createTodo);
+server.use("/api/changeTodoStatus", changeTodoStatus);
+server.use("/api/deleteTodo", deleteTodo);
 
 server.get("/", (req, res) => {
   res.send("React_TodoList is here");

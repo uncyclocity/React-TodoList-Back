@@ -24,24 +24,9 @@ router.get("/", async (req, res) => {
     return res.data.access_token;
   };
 
-  const getUserInfo = async (ACCESS_TOKEN) => {
-    const res = await axios({
-      method: "POST",
-      url: "https://kapi.kakao.com/v2/user/me",
-      headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN}`,
-      },
-    }).catch((err) => {
-      console.error("사용자 정보를 받아오는 도중 오류가 발생했습니다.");
-      console.error(err);
-    });
-    return res.data;
-  };
-
   const ACCESS_TOKEN = await getAccessToken(code);
-  const { id, properties } = await getUserInfo(ACCESS_TOKEN);
 
-  res.send({ id, nickname: properties["nickname"] });
+  res.send({ ACCESS_TOKEN });
 });
 
 module.exports = router;
