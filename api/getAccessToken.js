@@ -2,13 +2,12 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   const { code } = req.query;
   const redirectUri = "http://localhost:3000/logining";
 
-  const getAuthCode = async (code) => {
-    console.log(code);
-    await axios({
+  const getAccessToken = async (code) => {
+    const res = await axios({
       method: "POST",
       url: "https://kauth.kakao.com/oauth/token",
       params: {
@@ -17,20 +16,32 @@ router.get("/", (req, res) => {
         redirect_uri: redirectUri,
         code,
       },
-    }).then((res) => {
-      console.log(res);
-      // const ACCESS_TOKEN = res.data.access_token;
-      // const { Kakao } = window;
-      // Kakao.API.request({
-      //   url: "v2/user/me",
-      //   success: ({ kakao_account }) => {
-      //     console.log(kakao_account);
-      //   },
-      // });
+    }).catch((err) => {
+      console.error("액세스 토큰을 받아오는 도중 오류가 발생했습니다.");
+      console.error(err);
     });
+
+    return res.data.access_token;
   };
 
-  getAuthCode(code);
+  const getUserInfo = async (ACCESS_TOKEN) => {
+    const res = await axios({
+      method: "POST",
+      url: "https://kapi.kakao.com/v2/user/me",
+      headers: {
+        Authorization: `Bearer ${ACCESS_TOKEN}`,
+      },
+    }).catch((err) => {
+      console.error("사용자 정보를 받아오는 도중 오류가 발생했습니다.");
+      console.error(err);
+    });
+    return res.data;
+  };
+
+  const ACCESS_TOKEN = await getAccessToken(code);
+  const { id, properties } = await getUserInfo(ACCESS_TOKEN);
+
+  res.send({ id, nickname: properties["nickname"] });
 });
 
 module.exports = router;
