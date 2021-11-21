@@ -46,7 +46,7 @@ const handler = async (req, res) => {
         }
         if (getIsExistMember(userPlatformDB, id)) {
           // DB에 존재하는 사용자의 경우 새로 만들지 않음
-          return res.status(200);
+          return res.status(200).send("data existed");
         } else {
           await createNewMember(id, nickname, userPlatformDB);
           const usercreated = await userPlatformDB.save();
@@ -56,7 +56,6 @@ const handler = async (req, res) => {
         return res.status(500).send(error.message);
       }
     } else {
-      console.log(req.body);
       res.status(422).send("data_incomplete");
     }
   } else {

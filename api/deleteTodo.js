@@ -10,7 +10,7 @@ const getPlatformDB = async (platform) => {
 
 const getTargetMemberIdx = (userPlatformDB, userId) => {
   const targetMemberIdx = userPlatformDB.members.findIndex(
-    (member) => member.memberId === userId
+    (member) => member.memberId === userId.toString()
   );
   return targetMemberIdx;
 };
@@ -18,16 +18,17 @@ const getTargetMemberIdx = (userPlatformDB, userId) => {
 const deleteTodo = (userPlatformDB, targetMemberIdx, id) => {
   const targetDeletedTodoArr = userPlatformDB.members[
     targetMemberIdx
-  ].Todos.filter((todo) => todo.id !== id);
+  ].Todos.filter((todo) => todo.id !== id.toString());
+  console.log(targetDeletedTodoArr);
   return targetDeletedTodoArr;
 };
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
     const { userId, userPlatform, id } = req.body;
-    if (userId && userPlatform && id) {
+    if (userId && userPlatform && id >= 0) {
       try {
-        let userPlatformDB = getPlatformDB(userPlatform);
+        let userPlatformDB = await getPlatformDB(userPlatform);
         const targetMemberIdx = getTargetMemberIdx(userPlatformDB, userId);
         userPlatformDB.members[targetMemberIdx].Todos = deleteTodo(
           userPlatformDB,
