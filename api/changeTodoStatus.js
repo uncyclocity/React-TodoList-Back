@@ -10,7 +10,7 @@ const getPlatformDB = async (platform) => {
 
 const getTargetMemberIdx = (userPlatformDB, userId) => {
   const targetMemberIdx = userPlatformDB.members.findIndex(
-    (member) => member.memberId === userId
+    (member) => member.memberId === userId.toString()
   );
   return targetMemberIdx;
 };
@@ -36,7 +36,7 @@ const handler = async (req, res) => {
     const { userId, userPlatform, id, isDone } = req.body;
     if (userId && userPlatform && id && isDone) {
       try {
-        let userPlatformDB = getPlatformDB(userPlatform);
+        let userPlatformDB = await getPlatformDB(userPlatform);
         const targetMemberIdx = getTargetMemberIdx(userPlatformDB, userId);
         const targetTodoIdx = getTargetTodoIdx(
           userPlatformDB,

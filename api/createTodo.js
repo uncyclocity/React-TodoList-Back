@@ -9,9 +9,8 @@ const getPlatformDB = async (platform) => {
 };
 
 const getTargetMemberIdx = (userPlatformDB, userId) => {
-  console.log(userPlatformDB);
   const targetMemberIdx = userPlatformDB.members.findIndex(
-    (member) => member.memberId === userId
+    (member) => member.memberId === userId.toString()
   );
   return targetMemberIdx;
 };
