@@ -9,6 +9,7 @@ const getPlatformDB = async (platform) => {
 };
 
 const getTargetMemberIdx = (userPlatformDB, userId) => {
+  console.log(userPlatformDB);
   const targetMemberIdx = userPlatformDB.members.findIndex(
     (member) => member.memberId === userId
   );
@@ -27,9 +28,9 @@ const createNewTodo = (id, text, isDone, targetMemberIdx, userPlatformDB) => {
 const handler = async (req, res) => {
   if (req.method === "POST") {
     const { userId, userPlatform, id, text, isDone } = req.body;
-    if (userId && userPlatform && id && text && isDone) {
+    if (userId && userPlatform && id >= 0 && text) {
       try {
-        let userPlatformDB = getPlatformDB(userPlatform);
+        let userPlatformDB = await getPlatformDB(userPlatform);
         const targetMemberIdx = getTargetMemberIdx(userPlatformDB, userId);
         createNewTodo(id, text, isDone, targetMemberIdx, userPlatformDB);
         const usercreated = await userPlatformDB.save();
