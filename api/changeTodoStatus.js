@@ -17,7 +17,7 @@ const getTargetMemberIdx = (userPlatformDB, userId) => {
 
 const getTargetTodoIdx = (userPlatformDB, targetMemberIdx, id) => {
   const targetTodoIdx = userPlatformDB.members[targetMemberIdx].Todos.findIndex(
-    (todo) => todo.id === id
+    (todo) => todo.id === id.toString()
   );
   return targetTodoIdx;
 };
@@ -28,13 +28,13 @@ const changeTodoStatus = (
   targetTodoIdx,
   userPlatformDB
 ) => {
-  userPlatformDB.members[targetMemberIdx].Todos[targetTodoIdx] = isDone;
+  userPlatformDB.members[targetMemberIdx].Todos[targetTodoIdx].isDone = isDone;
 };
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
     const { userId, userPlatform, id, isDone } = req.body;
-    if (userId && userPlatform && id && isDone) {
+    if (userId && userPlatform && id >= 0) {
       try {
         let userPlatformDB = await getPlatformDB(userPlatform);
         const targetMemberIdx = getTargetMemberIdx(userPlatformDB, userId);

@@ -19,7 +19,6 @@ const deleteTodo = (userPlatformDB, targetMemberIdx, id) => {
   const targetDeletedTodoArr = userPlatformDB.members[
     targetMemberIdx
   ].Todos.filter((todo) => todo.id !== id.toString());
-  console.log(targetDeletedTodoArr);
   return targetDeletedTodoArr;
 };
 

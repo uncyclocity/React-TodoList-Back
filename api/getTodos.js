@@ -10,47 +10,28 @@ const getPlatformDB = async (platform) => {
 
 const getTargetMemberIdx = (userPlatformDB, userId) => {
   const targetMemberIdx = userPlatformDB.members.findIndex(
-    (member) => member.memberId === userId
+    (member) => member.memberId === userId.toString()
   );
   return targetMemberIdx;
 };
 
-const getTargetTodoIdx = (userPlatformDB, targetMemberIdx, id) => {
-  const targetTodoIdx = userPlatformDB.members[targetMemberIdx].Todos.findIndex(
-    (todo) => todo.id === id
-  );
-  return targetTodoIdx;
-};
-
-const changeTodoStatus = (
-  isDone,
-  targetMemberIdx,
-  targetTodoIdx,
-  userPlatformDB
-) => {
-  userPlatformDB.members[targetMemberIdx].Todos[targetTodoIdx] = isDone;
+const getTargetMemberTodosArr = (userPlatformDB, targetMemberIdx) => {
+  const targetMemberTodosArr = userPlatformDB.members[targetMemberIdx].Todos;
+  return targetMemberTodosArr;
 };
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
-    const { userId, userPlatform, id, isDone } = req.body;
-    if (userId && userPlatform && id && isDone) {
+    const { userId, userPlatform } = req.body;
+    if (userId && userPlatform) {
       try {
-        let userPlatformDB = getPlatformDB(userPlatform);
+        let userPlatformDB = await getPlatformDB(userPlatform);
         const targetMemberIdx = getTargetMemberIdx(userPlatformDB, userId);
-        const targetTodoIdx = getTargetTodoIdx(
+        const targetMemberTodosArr = getTargetMemberTodosArr(
           userPlatformDB,
-          targetMemberIdx,
-          id
+          targetMemberIdx
         );
-        changeTodoStatus(
-          isDone,
-          targetMemberIdx,
-          targetTodoIdx,
-          userPlatformDB
-        );
-        const usercreated = await userPlatformDB.save();
-        return res.status(200).send(usercreated);
+        return res.status(200).send(targetMemberTodosArr);
       } catch (error) {
         return res.status(500).send(error.message);
       }

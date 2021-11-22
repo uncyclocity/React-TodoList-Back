@@ -15,7 +15,6 @@ const createNewPlatform = async (platform) => {
     userPlatform: platform,
     members: [],
   };
-  console.log(newPlatform);
   return new MembersInfo(newPlatform);
 };
 
