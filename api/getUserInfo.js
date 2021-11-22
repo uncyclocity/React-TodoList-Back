@@ -14,12 +14,13 @@ router.get("/", async (req, res) => {
       },
     }).catch((err) => {
       console.error("사용자 정보를 받아오는 도중 오류가 발생했습니다.");
-      console.error(err);
     });
     return res.data;
   };
 
-  const { id, properties } = await getUserInfo(ACCESS_TOKEN);
+  const { id, properties } = await getUserInfo(ACCESS_TOKEN).catch((err) => {
+    res.status(422).send(err);
+  });
 
   res.send({ id, nickname: properties["nickname"], platform: "kakao" });
 });

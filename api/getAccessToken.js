@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
       },
     }).catch((err) => {
       console.error("액세스 토큰을 받아오는 도중 오류가 발생했습니다.");
-      console.error(err);
+      res.status(422).send(err);
     });
 
     return res.data.access_token;
