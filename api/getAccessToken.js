@@ -4,7 +4,7 @@ const axios = require("axios");
 
 router.get("/", async (req, res) => {
   const { code } = req.query;
-  const redirectUri = "https://react-todo-list-lyart-tau.vercel.app/";
+  const redirectUri = "https://react-todo-list-lyart-tau.vercel.app";
 
   const getAccessToken = async (code) => {
     const res = await axios({
