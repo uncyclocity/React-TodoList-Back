@@ -2,19 +2,17 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 
-router.get("/", async (req, res) => {
-  const { code } = req.query;
-  const redirectUri = "http://localhost:3000";
+router.post("/", async (req, res) => {
+  const { REFRESH_TOKEN } = req.body;
 
-  const getAccessToken = async (code) => {
+  const getAccessToken = async () => {
     const res = await axios({
       method: "POST",
       url: "https://kauth.kakao.com/oauth/token",
       params: {
-        grant_type: "authorization_code",
+        grant_type: "refresh_token",
         client_id: process.env.CLIENT_ID,
-        redirect_uri: redirectUri,
-        code,
+        refresh_token: REFRESH_TOKEN,
       },
     }).catch((err) => {
       console.error("액세스 토큰을 받아오는 도중 오류가 발생했습니다.");
@@ -23,13 +21,12 @@ router.get("/", async (req, res) => {
 
     return {
       ACCESS_TOKEN: res.data.access_token,
-      REFRESH_TOKEN: res.data.refresh_token,
     };
   };
 
-  const { ACCESS_TOKEN, REFRESH_TOKEN } = await getAccessToken(code);
+  const { ACCESS_TOKEN } = await getAccessToken();
 
-  res.send({ ACCESS_TOKEN, REFRESH_TOKEN });
+  res.send({ ACCESS_TOKEN });
 });
 
 module.exports = router;

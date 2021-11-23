@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 
-router.get("/", async (req, res) => {
-  const { ACCESS_TOKEN } = req.query;
+router.post("/", async (req, res) => {
+  const { ACCESS_TOKEN } = req.body;
 
   const getUserInfo = async (ACCESS_TOKEN) => {
     const res = await axios({

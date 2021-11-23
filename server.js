@@ -14,6 +14,7 @@ const createTodo = require("./api/createTodo");
 const changeTodoStatus = require("./api/changeTodoStatus");
 const deleteTodo = require("./api/deleteTodo");
 const getTodos = require("./api/getTodos");
+const refreshAccessToken = require("./api/refreshAccessToken");
 
 server.use("/api/getAccessToken", getAccessToken);
 server.use("/api/getUserInfo", getUserInfo);
@@ -22,6 +23,7 @@ server.use("/api/createTodo", createTodo);
 server.use("/api/changeTodoStatus", changeTodoStatus);
 server.use("/api/deleteTodo", deleteTodo);
 server.use("/api/getTodos", getTodos);
+server.use("/api/refreshAccessToken", refreshAccessToken);
 
 server.get("/", (req, res) => {
   res.send("React_TodoList is here");
