@@ -4,7 +4,7 @@ const axios = require("axios");
 
 router.get("/", async (req, res) => {
   const { code } = req.query;
-  const redirectUri = "http://localhost:3000";
+  const redirectUri = "https://react-todolist.herokuapp.com";
 
   const getAccessToken = async (code) => {
     const res = await axios({
