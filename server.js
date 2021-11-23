@@ -29,7 +29,7 @@ server.get("/", (req, res) => {
   res.send("React_TodoList is here");
 });
 
-server.listen(3050, (err) => {
+server.listen(process.env.PORT, (err) => {
   if (err) throw err;
-  console.log(3050 + "번 포트에서 대기 중");
+  console.log(process.env.PORT + "번 포트에서 대기 중");
 });
