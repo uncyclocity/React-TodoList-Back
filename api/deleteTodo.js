@@ -1,26 +1,5 @@
 const connectDB = require("../middleware/mongodb");
-const MembersInfo = require("../models/MembersInfo");
-
-const getPlatformDB = async (platform) => {
-  const userPlatformDB = await MembersInfo.findOne({
-    userPlatform: platform,
-  });
-  return userPlatformDB;
-};
-
-const getTargetMemberIdx = (userPlatformDB, userId) => {
-  const targetMemberIdx = userPlatformDB.members.findIndex(
-    (member) => member.memberId === userId.toString()
-  );
-  return targetMemberIdx;
-};
-
-const deleteTodo = (userPlatformDB, targetMemberIdx, id) => {
-  const targetDeletedTodoArr = userPlatformDB.members[
-    targetMemberIdx
-  ].Todos.filter((todo) => todo.id !== id.toString());
-  return targetDeletedTodoArr;
-};
+const { getPlatformDB, getTargetMemberIdx, deleteTodo } = require("./apifunc");
 
 const handler = async (req, res) => {
   if (req.method === "POST") {

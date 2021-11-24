@@ -12,17 +12,17 @@ router.post("/", async (req, res) => {
       headers: {
         Authorization: `Bearer ${ACCESS_TOKEN}`,
       },
-    }).catch((err) => {
-      console.error("사용자 정보를 받아오는 도중 오류가 발생했습니다.");
     });
     return res.data;
   };
 
-  const { id, properties } = await getUserInfo(ACCESS_TOKEN).catch((err) => {
+  try {
+    const { id, properties } = await getUserInfo(ACCESS_TOKEN);
+    res.send({ id, nickname: properties["nickname"], platform: "kakao" });
+  } catch (err) {
+    console.error("사용자 정보를 받아오는 도중 오류가 발생했습니다.");
     res.status(422).send(err);
-  });
-
-  res.send({ id, nickname: properties["nickname"], platform: "kakao" });
+  }
 });
 
 module.exports = router;

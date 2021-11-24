@@ -1,35 +1,10 @@
 const connectDB = require("../middleware/mongodb");
-const MembersInfo = require("../models/MembersInfo");
-
-const getPlatformDB = async (platform) => {
-  const userPlatformDB = await MembersInfo.findOne({
-    userPlatform: platform,
-  });
-  return userPlatformDB;
-};
-
-const getTargetMemberIdx = (userPlatformDB, userId) => {
-  const targetMemberIdx = userPlatformDB.members.findIndex(
-    (member) => member.memberId === userId.toString()
-  );
-  return targetMemberIdx;
-};
-
-const getTargetTodoIdx = (userPlatformDB, targetMemberIdx, id) => {
-  const targetTodoIdx = userPlatformDB.members[targetMemberIdx].Todos.findIndex(
-    (todo) => todo.id === id.toString()
-  );
-  return targetTodoIdx;
-};
-
-const changeTodoStatus = (
-  isDone,
-  targetMemberIdx,
-  targetTodoIdx,
-  userPlatformDB
-) => {
-  userPlatformDB.members[targetMemberIdx].Todos[targetTodoIdx].isDone = isDone;
-};
+const {
+  getPlatformDB,
+  getTargetMemberIdx,
+  getTargetTodoIdx,
+  changeTodoStatus,
+} = require("./apifunc");
 
 const handler = async (req, res) => {
   if (req.method === "POST") {

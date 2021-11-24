@@ -16,20 +16,20 @@ router.get("/", async (req, res) => {
         redirect_uri: redirectUri,
         code,
       },
-    }).catch((err) => {
-      console.error("액세스 토큰을 받아오는 도중 오류가 발생했습니다.");
-      res.status(422).send(err);
     });
-
     return {
       ACCESS_TOKEN: res.data.access_token,
       REFRESH_TOKEN: res.data.refresh_token,
     };
   };
 
-  const { ACCESS_TOKEN, REFRESH_TOKEN } = await getAccessToken(code);
-
-  res.send({ ACCESS_TOKEN, REFRESH_TOKEN });
+  try {
+    const { ACCESS_TOKEN, REFRESH_TOKEN } = await getAccessToken(code);
+    res.send({ ACCESS_TOKEN, REFRESH_TOKEN });
+  } catch (err) {
+    console.error("액세스 토큰을 받아오는 도중 오류가 발생했습니다.");
+    res.status(422).send(err);
+  }
 });
 
 module.exports = router;

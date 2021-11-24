@@ -1,38 +1,10 @@
 const connectDB = require("../middleware/mongodb");
-const MembersInfo = require("../models/MembersInfo");
-const mongoose = require("mongoose");
-
-const getPlatformDB = async (platform) => {
-  const userPlatformDB = await MembersInfo.findOne({
-    userPlatform: platform,
-  });
-  return userPlatformDB;
-};
-
-const createNewPlatform = async (platform) => {
-  var newPlatform = {
-    _id: new mongoose.Types.ObjectId(),
-    userPlatform: platform,
-    members: [],
-  };
-  return new MembersInfo(newPlatform);
-};
-
-const getIsExistMember = (userPlatformDB, id) => {
-  const targetMemberIdx = userPlatformDB.members.findIndex(
-    (member) => member.memberId === id.toString()
-  );
-  return targetMemberIdx >= 0;
-};
-
-const createNewMember = async (memberId, nickname, userPlatformDB) => {
-  const userObj = {
-    memberId,
-    nickname,
-    Todos: [],
-  };
-  userPlatformDB.members.push(userObj);
-};
+const {
+  getPlatformDB,
+  createNewPlatform,
+  getIsExistMember,
+  createNewMember,
+} = require("./apifunc");
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
