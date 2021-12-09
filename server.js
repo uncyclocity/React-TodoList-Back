@@ -7,26 +7,41 @@ server.use(express.json());
 
 server.use(cors());
 
-const getAccessToken = require("./api/getAccessToken");
-const getUserInfo = require("./api/getUserInfo");
-const createMember = require("./api/createMember");
-const createTodo = require("./api/createTodo");
-const changeTodoStatus = require("./api/changeTodoStatus");
-const deleteTodo = require("./api/deleteTodo");
-const getTodos = require("./api/getTodos");
-const refreshAccessToken = require("./api/refreshAccessToken");
+// get
+const getAccessToken = require("./api/get/getAccessToken");
+const getUserInfo = require("./api/get/getUserInfo");
+const getTodos = require("./api/get/getTodos");
 
-server.use("/api/getAccessToken", getAccessToken);
-server.use("/api/getUserInfo", getUserInfo);
-server.use("/api/createMember", createMember);
-server.use("/api/createTodo", createTodo);
-server.use("/api/changeTodoStatus", changeTodoStatus);
-server.use("/api/deleteTodo", deleteTodo);
-server.use("/api/getTodos", getTodos);
-server.use("/api/refreshAccessToken", refreshAccessToken);
+// post
+const createMember = require("./api/post/createMember");
+const createTodo = require("./api/post/createTodo");
+const refreshAccessToken = require("./api/post/refreshAccessToken");
+
+// put
+const changeTodoStatus = require("./api/put/changeTodoStatus");
+
+// delete
+const deleteTodo = require("./api/delete/deleteTodo");
+
+
+// get
+server.use("/get/accesstoken", getAccessToken);
+server.use("/get/userinfo", getUserInfo);
+server.use("/get/todos", getTodos);
+
+// post
+server.use("/post/member", createMember);
+server.use("/post/todo", createTodo);
+server.use("/post/accesstoken", refreshAccessToken);
+
+// put
+server.use("/put/todostatus", changeTodoStatus);
+
+// delete
+server.use("/delete/todo", deleteTodo);
 
 server.get("/", (req, res) => {
-  res.send("React_TodoList is here");
+  res.send("React TodoList is here");
 });
 
 server.listen(process.env.PORT, (err) => {

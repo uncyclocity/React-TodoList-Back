@@ -1,17 +1,28 @@
-const connectDB = require("../middleware/mongodb");
-const { getPlatformDB, getTargetMemberIdx, deleteTodo } = require("./apifunc");
+const connectDB = require("../../middleware/mongodb");
+const {
+  getPlatformDB,
+  getTargetMemberIdx,
+  getTargetTodoIdx,
+  changeTodoStatus,
+} = require("../apifunc");
 
 const handler = async (req, res) => {
-  if (req.method === "POST") {
-    const { userId, userPlatform, id } = req.body;
+  if (req.method === "PUT") {
+    const { userId, userPlatform, id, isDone } = req.body;
     if (userId && userPlatform && id >= 0) {
       try {
         let userPlatformDB = await getPlatformDB(userPlatform);
         const targetMemberIdx = getTargetMemberIdx(userPlatformDB, userId);
-        userPlatformDB.members[targetMemberIdx].Todos = deleteTodo(
+        const targetTodoIdx = getTargetTodoIdx(
           userPlatformDB,
           targetMemberIdx,
           id
+        );
+        changeTodoStatus(
+          isDone,
+          targetMemberIdx,
+          targetTodoIdx,
+          userPlatformDB
         );
         const usercreated = await userPlatformDB.save();
         return res.status(200).send(usercreated);

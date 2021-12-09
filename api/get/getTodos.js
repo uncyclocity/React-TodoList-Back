@@ -1,9 +1,9 @@
-const connectDB = require("../middleware/mongodb");
+const connectDB = require("../../middleware/mongodb");
 const {
   getPlatformDB,
   getTargetMemberIdx,
   getTargetMemberTodosArr,
-} = require("./apifunc");
+} = require("../apifunc");
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
