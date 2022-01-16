@@ -33,7 +33,7 @@ const changeTodoStatus = (
 };
 
 const createNewPlatform = async (platform) => {
-  var newPlatform = {
+  const newPlatform = {
     _id: new mongoose.Types.ObjectId(),
     userPlatform: platform,
     members: [],
